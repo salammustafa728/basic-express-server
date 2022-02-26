@@ -1,15 +1,24 @@
 'use strict';
 
 const { expect } = require('@jest/globals');
-const server = require("../src/server");
+
 const validator = require('../src/middleware/validator');
-const supertest = require("supertest");
-const request = supertest(server.app);
 
 describe('test validator middleware', ()=>{
 
-    it('test validator', async ()=>{
-        const response = await request.get('/person?name=salam')
-        expect(typeof response.body).toEqual('object');
+    it('test query without name', ()=>{
+        let req = {query:{}};
+        let res = {};
+        let next = jest.fn();
+        validator(req,res,next);
+        expect(next).toHaveBeenCalledWith('Name required');
+    })
+    
+    it('test query with name', ()=>{
+        let req = {query:{name:'salam'}};
+        let res = {};
+        let next = jest.fn();
+        validator(req,res,next);
+        expect(next).toHaveBeenCalledWith();
     })
 })

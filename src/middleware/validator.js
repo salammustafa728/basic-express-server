@@ -1,13 +1,12 @@
-'use strict';
+"use strict";
 
-function validator(req,res,next){
-        if(req.query.name != null){
-            next();
-        }else {
-            next(`${req.query.name} is not a string`);
-        }  
-  
+function validator(req, res, next) {
+    let name = req.query.name;
+  if (!name) {
+    next("Name required");
+  } else {
+    next();
+  }
 }
-
 
 module.exports = validator;
